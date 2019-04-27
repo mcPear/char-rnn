@@ -11,6 +11,7 @@ from model import build_model, load_weights
 DATA_DIR = './data'
 MODEL_DIR = './model'
 
+
 def build_sample_model(vocab_size):
     model = Sequential()
     model.add(Embedding(vocab_size, 512, batch_input_shape=(1, 1)))
@@ -22,10 +23,11 @@ def build_sample_model(vocab_size):
     model.add(Activation('softmax'))
     return model
 
-def sample(epoch, header, num_chars):
+
+def sample(epoch, header='', num_chars=512):
     with open(os.path.join(MODEL_DIR, 'char_to_idx.json'), 'r') as f:
         char_to_idx = json.load(f)
-    idx_to_char = { i: ch for (ch, i) in list(char_to_idx.items()) }
+    idx_to_char = {i: ch for (ch, i) in list(char_to_idx.items())}
     vocab_size = len(char_to_idx)
 
     model = build_sample_model(vocab_size)
@@ -50,11 +52,12 @@ def sample(epoch, header, num_chars):
 
     return ''.join(idx_to_char[c] for c in sampled)
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Sample some text from the trained model.')
-    parser.add_argument('epoch', type=int, help='epoch checkpoint to sample from')
-    parser.add_argument('--seed', default='', help='initial seed for the generated text')
-    parser.add_argument('--len', type=int, default=512, help='number of characters to sample (default 512)')
-    args = parser.parse_args()
 
-    print(sample(args.epoch, args.seed, args.len))
+# if __name__ == '__main__':
+#     parser = argparse.ArgumentParser(description='Sample some text from the trained model.')
+#     parser.add_argument('epoch', type=int, help='epoch checkpoint to sample from')
+#     parser.add_argument('--seed', default='', help='initial seed for the generated text')
+#     parser.add_argument('--len', type=int, default=512, help='number of characters to sample (default 512)')
+#     args = parser.parse_args()
+
+print(sample(5))
